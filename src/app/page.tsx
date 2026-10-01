@@ -1,69 +1,48 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { ArrowUpRight, Check, CreditCard, Menu, PackageCheck, Play, Sparkles, Store, X } from "lucide-react";
+import { createBrowserSupabaseClient } from "@/lib/supabase-browser";
+
+const features = [
+  { icon: Store, title: "Sua loja, seu jeito", text: "Crie páginas de produto bonitas em minutos. Sem código obrigatório, sem mensalidade e sem prender seu negócio." },
+  { icon: CreditCard, title: "Pix que aprova rápido", text: "Checkout MisticPay integrado no fluxo. O cliente paga, o pedido atualiza e você acompanha tudo." },
+  { icon: PackageCheck, title: "Entrega automática", text: "Seu conteúdo digital vai para o e-mail do comprador assim que o pagamento é confirmado." },
+];
+
+const products = [
+  { category: "Design", name: "Notion Creator Kit", price: "R$ 29,90", color: "#9cf16a", initials: "NC" },
+  { category: "Educação", name: "Método Reels Pro", price: "R$ 47,00", color: "#9b87ff", initials: "MR" },
+  { category: "Dev", name: "UI Blocks 2026", price: "R$ 79,90", color: "#ffb85c", initials: "UI" },
+];
 
 export default function Home() {
+  const [open, setOpen] = useState(false);
+  const signIn = async (provider: "google" | "discord" = "google") => {
+    const supabase = createBrowserSupabaseClient();
+    await supabase.auth.signInWithOAuth({ provider, options: { redirectTo: `${window.location.origin}/auth/callback` } });
+  };
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main className="noise overflow-hidden">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-6 lg:px-8">
+        <a href="#top" className="flex items-center gap-3 font-semibold tracking-tight"><span className="grid h-9 w-9 place-items-center rounded-xl bg-[#b7f34a] text-sm font-black text-black">p</span><span className="text-xl">purpowebbx<span className="text-[#b7f34a]">.</span></span></a>
+        <div className="hidden items-center gap-8 text-sm text-[#9ca4ad] md:flex"><a href="#recursos" className="transition hover:text-white">Recursos</a><a href="#vitrine" className="transition hover:text-white">Vitrine</a><a href="#faq" className="transition hover:text-white">FAQ</a></div>
+        <div className="hidden items-center gap-3 md:flex"><button onClick={() => signIn("google")} className="rounded-full px-4 py-2 text-sm text-[#b7bec5] transition hover:text-white">Entrar</button><a href="#comece" className="rounded-full bg-[#b7f34a] px-5 py-2.5 text-sm font-semibold text-[#12170d] transition hover:bg-[#d2ff76]">Começar grátis <ArrowUpRight className="ml-1 inline h-4 w-4" /></a></div>
+        <button onClick={() => setOpen(!open)} className="rounded-lg border border-white/10 p-2 md:hidden" aria-label="Abrir menu">{open ? <X size={20} /> : <Menu size={20} />}</button>
+      </nav>
+      {open && <div className="mx-5 flex flex-col gap-5 rounded-2xl border border-white/10 bg-[#101317] p-5 text-sm md:hidden"><a href="#recursos" onClick={() => setOpen(false)}>Recursos</a><a href="#vitrine" onClick={() => setOpen(false)}>Vitrine</a><a href="#faq" onClick={() => setOpen(false)}>FAQ</a><div className="flex gap-2"><button onClick={() => signIn("google")} className="flex-1 rounded-full bg-[#b7f34a] px-4 py-2 font-semibold text-black">Google</button><button onClick={() => signIn("discord")} className="flex-1 rounded-full border border-white/15 px-4 py-2 font-semibold text-white">Discord</button></div></div>}
+
+      <section id="top" className="grid-bg relative mx-auto max-w-6xl px-5 pb-24 pt-20 text-center lg:px-8 lg:pb-36 lg:pt-32"><div className="pointer-events-none absolute left-1/2 top-14 h-64 w-64 -translate-x-1/2 rounded-full bg-[#b7f34a]/10 blur-[110px]" /><div className="relative mx-auto max-w-4xl"><div className="mb-7 inline-flex items-center gap-2 rounded-full border border-[#b7f34a]/25 bg-[#b7f34a]/8 px-3 py-1.5 text-xs font-medium text-[#c8f878]"><Sparkles size={14} /> Feito para quem vende na internet</div><h1 className="text-5xl font-semibold leading-[1.02] tracking-[-.06em] text-white sm:text-7xl lg:text-[92px]">Venda o que você sabe.<br /><span className="text-[#b7f34a]">A gente entrega.</span></h1><p className="mx-auto mt-7 max-w-xl text-base leading-7 text-[#9ca4ad] sm:text-lg">Uma base simples e poderosa para transformar seu produto digital em uma loja que vende — com Pix, entrega automática e controle total.</p><div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row"><a href="#comece" className="rounded-full bg-[#b7f34a] px-7 py-3.5 text-sm font-semibold text-[#11150d] transition hover:scale-[1.02] hover:bg-[#d2ff76]">Criar minha loja <ArrowUpRight className="ml-1 inline h-4 w-4" /></a><a href="#vitrine" className="rounded-full border border-white/15 px-7 py-3.5 text-sm font-medium text-white transition hover:bg-white/5">Ver como funciona <Play className="ml-1 inline h-3.5 w-3.5 fill-current" /></a></div></div></section>
+
+      <section id="recursos" className="mx-auto max-w-6xl px-5 py-20 lg:px-8"><div className="mb-12 flex flex-col justify-between gap-5 md:flex-row md:items-end"><div><p className="mb-3 text-xs font-semibold uppercase tracking-[.2em] text-[#b7f34a]">Tudo no mesmo lugar</p><h2 className="max-w-lg text-3xl font-semibold tracking-[-.04em] sm:text-5xl">Menos operação.<br />Mais tempo para criar.</h2></div><p className="max-w-sm text-sm leading-6 text-[#8b949e]">Você cria o produto e define as regras. O purpowebbx cuida da base para a venda acontecer com clareza.</p></div><div className="grid gap-4 md:grid-cols-3">{features.map(({ icon: Icon, title, text }, i) => <div key={title} className="panel rounded-2xl p-6 transition hover:-translate-y-1 hover:border-white/20"><div className="mb-12 flex items-center justify-between"><span className="grid h-11 w-11 place-items-center rounded-xl bg-white/8 text-[#b7f34a]"><Icon size={21} /></span><span className="font-mono text-xs text-[#606973]">0{i + 1}</span></div><h3 className="mb-3 text-lg font-medium">{title}</h3><p className="text-sm leading-6 text-[#8b949e]">{text}</p></div>)}</div></section>
+
+      <section id="vitrine" className="border-y border-white/8 bg-[#0c0f12] py-20"><div className="mx-auto max-w-6xl px-5 lg:px-8"><div className="mb-10 flex items-end justify-between"><div><p className="mb-3 text-xs font-semibold uppercase tracking-[.2em] text-[#b7f34a]">Vitrine pública</p><h2 className="text-3xl font-semibold tracking-[-.04em] sm:text-5xl">O que está vendendo agora</h2></div><a href="#comece" className="hidden text-sm text-[#b7f34a] sm:block">Explorar produtos <ArrowUpRight className="ml-1 inline h-4 w-4" /></a></div><div className="grid gap-4 md:grid-cols-3">{products.map((product) => <article key={product.name} className="group overflow-hidden rounded-2xl border border-white/10 bg-[#15191d] transition hover:-translate-y-1 hover:border-white/20"><div className="flex h-48 items-center justify-center" style={{ background: `radial-gradient(circle at 50% 45%, ${product.color}45, transparent 45%), #15191d` }}><div className="grid h-20 w-20 rotate-3 place-items-center rounded-2xl border border-white/25 text-2xl font-bold text-white shadow-2xl" style={{ background: `${product.color}30` }}>{product.initials}</div></div><div className="p-5"><p className="mb-2 text-xs text-[#8b949e]">{product.category}</p><div className="flex items-center justify-between"><h3 className="font-medium">{product.name}</h3><span className="font-mono text-sm" style={{ color: product.color }}>{product.price}</span></div><button className="mt-5 w-full rounded-xl border border-white/10 py-2.5 text-sm text-[#b8c0c8] transition group-hover:border-[#b7f34a]/40 group-hover:text-[#b7f34a]">Ver produto <ArrowUpRight className="ml-1 inline h-4 w-4" /></button></div></article>)}</div></div></section>
+
+      <section className="mx-auto grid max-w-6xl gap-8 px-5 py-20 lg:grid-cols-[1fr_1.2fr] lg:px-8"><div><p className="mb-3 text-xs font-semibold uppercase tracking-[.2em] text-[#b7f34a]">O seu painel</p><h2 className="max-w-md text-3xl font-semibold tracking-[-.04em] sm:text-5xl">Clareza para decidir o próximo passo.</h2><p className="mt-5 max-w-md text-sm leading-6 text-[#8b949e]">Acompanhe vendas, pagamentos e produtos em uma visão limpa. Sem planilhas intermináveis e sem números escondidos.</p><div className="mt-8 flex flex-col gap-3 text-sm text-[#c7cdd2]"><div className="flex items-center gap-3"><Check className="text-[#b7f34a]" size={17} /> Receita e pedidos em tempo real</div><div className="flex items-center gap-3"><Check className="text-[#b7f34a]" size={17} /> Comissão da plataforma transparente</div><div className="flex items-center gap-3"><Check className="text-[#b7f34a]" size={17} /> Saques somente por Pix</div></div></div><div className="panel glow rounded-3xl p-4 sm:p-6"><div className="mb-5 flex items-center justify-between"><div><p className="text-xs text-[#7c858e]">Saldo disponível</p><p className="mt-1 text-3xl font-semibold">R$ 12.840<span className="text-[#8b949e]">,50</span></p></div><span className="rounded-full bg-[#b7f34a]/10 px-3 py-1 text-xs text-[#b7f34a]">+18,4%</span></div><div className="flex h-44 items-end gap-2 rounded-2xl bg-black/15 p-4">{[22,35,28,49,38,62,54,78,63,88,72,96].map((h, i) => <div key={i} className="flex-1 rounded-t-md bg-gradient-to-t from-[#7c5cff] to-[#b7f34a] opacity-70 transition hover:opacity-100" style={{ height: `${h}%` }} />)}</div><div className="mt-5 grid grid-cols-3 gap-3"><div className="rounded-xl bg-white/5 p-3"><p className="text-[11px] text-[#7c858e]">Vendas</p><p className="mt-1 font-medium">284</p></div><div className="rounded-xl bg-white/5 p-3"><p className="text-[11px] text-[#7c858e]">Conversão</p><p className="mt-1 font-medium">6,8%</p></div><div className="rounded-xl bg-white/5 p-3"><p className="text-[11px] text-[#7c858e]">Produtos</p><p className="mt-1 font-medium">12</p></div></div></div></section>
+
+      <section id="comece" className="mx-5 mb-20 overflow-hidden rounded-3xl border border-[#b7f34a]/25 bg-[#b7f34a] px-6 py-14 text-center text-[#11150d] sm:px-10"><div className="mx-auto max-w-2xl"><p className="mb-4 text-xs font-bold uppercase tracking-[.2em] opacity-60">Pronto para começar?</p><h2 className="text-4xl font-semibold tracking-[-.05em] sm:text-6xl">Seu próximo cliente<br />está a um clique.</h2><p className="mx-auto mt-5 max-w-md text-sm leading-6 opacity-70">Crie sua conta com Google ou Discord e publique seu primeiro produto hoje.</p><div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row"><button onClick={() => signIn("google")} className="rounded-full bg-[#10140d] px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-[#242d1b]">Entrar com Google <ArrowUpRight className="ml-1 inline h-4 w-4" /></button><button onClick={() => signIn("discord")} className="rounded-full border border-[#10140d]/20 px-7 py-3.5 text-sm font-semibold text-[#10140d]">Entrar com Discord</button></div></div></section>
+
+      <footer className="mx-auto flex max-w-6xl flex-col gap-5 border-t border-white/8 px-5 py-8 text-xs text-[#717a84] sm:flex-row sm:items-center sm:justify-between lg:px-8"><p>© 2026 purpowebbx. Feito para vender melhor.</p><div className="flex gap-5"><a href="#recursos" className="hover:text-white">Recursos</a><a href="#faq" className="hover:text-white">Termos</a><a href="#faq" className="hover:text-white">Privacidade</a></div></footer>
+    </main>
   );
 }

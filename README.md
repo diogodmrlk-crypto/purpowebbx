@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# purpowebbx
 
-## Getting Started
+Marketplace de produtos digitais em Next.js + TypeScript, Supabase e MisticPay.
 
-First, run the development server:
+## Incluído
+
+- Landing page responsiva com identidade própria, inspirada no modelo funcional da referência sem copiar conteúdo proprietário.
+- Supabase: usuários, lojas, produtos, pedidos, entregas, saques Pix e idempotência de webhooks com RLS.
+- OAuth com Google e Discord via Supabase Auth.
+- Checkout Pix MisticPay server-side em `/api/checkout`.
+- Webhook de aprovação em `/api/webhooks/misticpay` que marca o pedido como pago e envia o conteúdo por e-mail via Resend.
+- Comissão configurável por `PLATFORM_FEE_PERCENT` (padrão 3%).
+- Saque somente Pix via `/api/withdrawals`.
+- Segredos nunca expostos ao navegador ou commitados.
+
+## Rodar localmente
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
+cp .env.example .env.local
+# preencha as credenciais em .env.local
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## OAuth
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+No Supabase Dashboard, habilite Google e Discord em Authentication > Providers e configure o callback:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`https://SEU-PROJETO.supabase.co/auth/v1/callback`
 
-## Learn More
+No app, use também `http://localhost:3000/auth/callback` e a URL de produção da Vercel.
 
-To learn more about Next.js, take a look at the following resources:
+## MisticPay
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Use uma Access Key atual (`pk_` + `sk_`) com escopos de cash-in, cash-out e consulta. A integração utiliza Basic Auth no backend e nunca expõe `sk_` no frontend. Cadastre o webhook de produção para:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+`https://SEU-DOMINIO.vercel.app/api/webhooks/misticpay`
 
-## Deploy on Vercel
+## Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Importe o repositório, selecione Next.js e cadastre as variáveis de `.env.example` em Production/Preview. Atualize `NEXT_PUBLIC_SITE_URL` e as URLs de callback OAuth após publicar.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Segurança
+
+O webhook é idempotente, a entrega só acontece após estado pago e o conteúdo não é enviado ao browser antes da confirmação. Em produção, configure domínio de e-mail autenticado no Resend e valide a assinatura do webhook conforme o recurso de assinatura disponível na sua conta MisticPay.
