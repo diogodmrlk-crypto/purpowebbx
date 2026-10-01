@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
-  const supabase = createServerClient("https://mteefiyczqjdvbdypill.supabase.co", "sb_publishable_teuTwvOVxRMpwpqX1nkQw_mxuhpo4C", { cookies: { getAll: () => request.cookies.getAll(), setAll: (cookiesToSet) => { cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value)); response = NextResponse.next({ request }); cookiesToSet.forEach(({ name, value, options }) => response.cookies.set(name, value, options)); } } });
+  const supabase = createServerClient("https://mteefiyczqjdvbdypill.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10ZWVmaXljenFqZHZiZHlwaWxsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA4MjEwMzMsImV4cCI6MjEwNjM5NzAzM30.iL3ZNll1hCybwfgHFKk5Y84uXrr5oNor91udb1wPSVU", { cookies: { getAll: () => request.cookies.getAll(), setAll: (cookiesToSet) => { cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value)); response = NextResponse.next({ request }); cookiesToSet.forEach(({ name, value, options }) => response.cookies.set(name, value, options)); } } });
   await supabase.auth.getUser();
   const host = request.headers.get("host")?.split(":")[0] ?? "";
   const baseDomain = process.env.NEXT_PUBLIC_STORE_DOMAIN ?? "purpowebbx.com";

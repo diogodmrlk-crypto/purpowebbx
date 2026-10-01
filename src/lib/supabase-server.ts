@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 
 export async function createServerSupabaseClient() {
   const cookieStore = await cookies();
-  return createServerClient("https://mteefiyczqjdvbdypill.supabase.co", "sb_publishable_teuTwvOVxRMpwpqX1nkQw_mxuhpo4C", {
+  return createServerClient("https://mteefiyczqjdvbdypill.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10ZWVmaXljenFqZHZiZHlwaWxsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA4MjEwMzMsImV4cCI6MjEwNjM5NzAzM30.iL3ZNll1hCybwfgHFKk5Y84uXrr5oNor91udb1wPSVU", {
     cookies: {
       getAll: () => cookieStore.getAll(),
       setAll: (cookiesToSet) => {
