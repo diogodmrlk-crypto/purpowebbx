@@ -10,7 +10,7 @@ Marketplace de produtos digitais em Next.js + TypeScript, Supabase e MisticPay.
 - Checkout Pix MisticPay server-side em `/api/checkout`.
 - Webhook de aprovação em `/api/webhooks/misticpay` que marca o pedido como pago e envia o conteúdo por e-mail via Resend.
 - Comissão configurável por `PLATFORM_FEE_PERCENT` (padrão 3%).
-- Saque somente Pix via `/api/withdrawals`.
+- Saque somente Pix via `/api/withdrawals` para vendedores e `/api/admin/withdrawals` para o administrador, limitado ao saldo acumulado das comissões.
 - Segredos nunca expostos ao navegador ou commitados.
 
 ## Rodar localmente
